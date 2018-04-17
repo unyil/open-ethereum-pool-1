@@ -15,19 +15,19 @@ module.exports = function(environment) {
 
     APP: {
       // API host and port
-      ApiUrl: '//example.net/',
+      ApiUrl: '//pool.atheios.com/',
 
       // HTTP mining endpoint
-      HttpHost: 'http://example.net',
+      HttpHost: 'http://pool.atheios.com',
       HttpPort: 8888,
 
       // Stratum mining endpoint
-      StratumHost: 'example.net',
+      StratumHost: 'pool.atheios.com',
       StratumPort: 8008,
 
       // Fee and payout details
       PoolFee: '1%',
-      PayoutThreshold: '0.5 Ether',
+      PayoutThreshold: '0.5 ATH',
 
       // For network hashrate (change for your favourite fork)
       BlockTime: 14.4

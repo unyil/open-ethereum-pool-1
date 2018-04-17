@@ -8,11 +8,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common/math"
-
-	"github.com/sammy007/open-ethereum-pool/rpc"
-	"github.com/sammy007/open-ethereum-pool/storage"
-	"github.com/sammy007/open-ethereum-pool/util"
+	"github.com/atheioschain/open-ethereum-pool/rpc"
+	"github.com/atheioschain/open-ethereum-pool/storage"
+	"github.com/atheioschain/open-ethereum-pool/util"
 )
 
 type UnlockerConfig struct {
@@ -29,14 +27,16 @@ type UnlockerConfig struct {
 }
 
 const minDepth = 16
-const byzantiumHardForkHeight = 4370000
 
-var homesteadReward = math.MustParseBig256("5000000000000000000")
-var byzantiumReward = math.MustParseBig256("3000000000000000000")
+var (
+	big2                 = big.NewInt(2)
+	big32                = big.NewInt(32)
+	BlockReward *big.Int = new(big.Int).Mul(big.NewInt(12), big.NewInt(1e+18))
+)
 
 // Donate 10% from pool fees to developers
 const donationFee = 10.0
-const donationAccount = "0xb85150eb365e7df0941f0cf08235f987ba91506a"
+const donationAccount = "0x4c15a20f098b96d5d1f8c8e4aedf3af68818195c"
 
 type BlockUnlocker struct {
 	config   *UnlockerConfig
@@ -209,7 +209,50 @@ func (u *BlockUnlocker) handleBlock(block *rpc.GetBlockReply, candidate *storage
 		return err
 	}
 	candidate.Height = correctHeight
-	reward := getConstReward(candidate.Height)
+
+	reward := new(big.Int).Set(BlockReward)
+	headerNumber := big.NewInt(candidate.Height)
+
+	// Epoch 1 - Beyond Block 716727
+	if headerNumber.Cmp(big.NewInt(716727)) > 0 {
+		reward = new(big.Int).Mul(big.NewInt(10), big.NewInt(1e+18))
+	}
+	// Epoch 2 - Beyond Block 1433454
+	if headerNumber.Cmp(big.NewInt(1433454)) > 0 {
+		reward = new(big.Int).Mul(big.NewInt(9), big.NewInt(1e+18))
+	}
+	// Epoch 3 - Beyond Block 2866908
+	if headerNumber.Cmp(big.NewInt(2866908)) > 0 {
+		reward = new(big.Int).Mul(big.NewInt(8), big.NewInt(1e+18))
+	}
+	// Epoch 4 - Beyond Block 4300362
+	if headerNumber.Cmp(big.NewInt(4300362)) > 0 {
+		reward = new(big.Int).Mul(big.NewInt(7), big.NewInt(1e+18))
+	}
+	// Epoch 5 - Beyond Block 5733816
+	if headerNumber.Cmp(big.NewInt(5733816)) > 0 {
+		reward = new(big.Int).Mul(big.NewInt(6), big.NewInt(1e+18))
+	}
+	// Epoch 6 - Beyond Block 7167270
+	if headerNumber.Cmp(big.NewInt(7167270)) > 0 {
+		reward = new(big.Int).Mul(big.NewInt(5), big.NewInt(1e+18))
+	}
+	// Epoch 7 - Beyond Block 8600724
+	if headerNumber.Cmp(big.NewInt(8600724)) > 0 {
+		reward = new(big.Int).Mul(big.NewInt(4), big.NewInt(1e+18))
+	}
+	// Epoch 8 - Beyond Block 10034178
+	if headerNumber.Cmp(big.NewInt(10034178)) > 0 {
+		reward = new(big.Int).Mul(big.NewInt(3), big.NewInt(1e+18))
+	}
+	// Epoch 9 - Beyond Block 11467632
+	if headerNumber.Cmp(big.NewInt(11467632)) > 0 {
+		reward = new(big.Int).Mul(big.NewInt(2), big.NewInt(1e+18))
+	}
+	// Epoch 10 - Beyond Block 14334540
+	if headerNumber.Cmp(big.NewInt(14334540)) > 0 {
+		reward = new(big.Int).Mul(big.NewInt(1), big.NewInt(1e+18))
+	}
 
 	// Add TX fees
 	extraTxReward, err := u.getExtraRewardForTx(block)
@@ -223,7 +266,8 @@ func (u *BlockUnlocker) handleBlock(block *rpc.GetBlockReply, candidate *storage
 	}
 
 	// Add reward for including uncles
-	uncleReward := getRewardForUncle(candidate.Height)
+	uncleReward := new(big.Int).Div(reward, big32)
+	// uncleReward := getRewardForUncle(candidate.Height)
 	rewardForUncles := big.NewInt(0).Mul(uncleReward, big.NewInt(int64(len(block.Uncles))))
 	reward.Add(reward, rewardForUncles)
 
@@ -501,24 +545,83 @@ func weiToShannonInt64(wei *big.Rat) int64 {
 	return value
 }
 
-func getConstReward(height int64) *big.Int {
-	if height >= byzantiumHardForkHeight {
-		return new(big.Int).Set(byzantiumReward)
-	}
-	return new(big.Int).Set(homesteadReward)
-}
+// func getConstReward(height int64) *big.Int {
+// 	if height >= byzantiumHardForkHeight {
+// 		return new(big.Int).Set(byzantiumReward)
+// 	}
+// 	return new(big.Int).Set(homesteadReward)
+// }
 
-func getRewardForUncle(height int64) *big.Int {
-	reward := getConstReward(height)
-	return new(big.Int).Div(reward, new(big.Int).SetInt64(32))
-}
+// func getRewardForUncle(height int64) *big.Int {
+// 	reward := getConstReward(height)
+// 	return new(big.Int).Div(reward, new(big.Int).SetInt64(32))
+// }
 
 func getUncleReward(uHeight, height int64) *big.Int {
-	reward := getConstReward(height)
-	k := height - uHeight
-	reward.Mul(big.NewInt(8-k), reward)
-	reward.Div(reward, big.NewInt(8))
-	return reward
+	// reward := getConstReward(height)
+	// k := height - uHeight
+	// reward.Mul(big.NewInt(8-k), reward)
+	// reward.Div(reward, big.NewInt(8))
+	// return reward
+	uncleNumber := big.NewInt(uHeight)
+	headerNumber := big.NewInt(height)
+
+	// Rewards
+	reward := new(big.Int).Set(BlockReward)
+
+	// Epoch 1 - Beyond Block 716727
+	if headerNumber.Cmp(big.NewInt(716727)) > 0 {
+		reward = new(big.Int).Mul(big.NewInt(10), big.NewInt(1e+18))
+	}
+	// Epoch 2 - Beyond Block 1433454
+	if headerNumber.Cmp(big.NewInt(1433454)) > 0 {
+		reward = new(big.Int).Mul(big.NewInt(9), big.NewInt(1e+18))
+	}
+	// Epoch 3 - Beyond Block 2866908
+	if headerNumber.Cmp(big.NewInt(2866908)) > 0 {
+		reward = new(big.Int).Mul(big.NewInt(8), big.NewInt(1e+18))
+	}
+	// Epoch 4 - Beyond Block 4300362
+	if headerNumber.Cmp(big.NewInt(4300362)) > 0 {
+		reward = new(big.Int).Mul(big.NewInt(7), big.NewInt(1e+18))
+	}
+	// Epoch 5 - Beyond Block 5733816
+	if headerNumber.Cmp(big.NewInt(5733816)) > 0 {
+		reward = new(big.Int).Mul(big.NewInt(6), big.NewInt(1e+18))
+	}
+	// Epoch 6 - Beyond Block 7167270
+	if headerNumber.Cmp(big.NewInt(7167270)) > 0 {
+		reward = new(big.Int).Mul(big.NewInt(5), big.NewInt(1e+18))
+	}
+	// Epoch 7 - Beyond Block 8600724
+	if headerNumber.Cmp(big.NewInt(8600724)) > 0 {
+		reward = new(big.Int).Mul(big.NewInt(4), big.NewInt(1e+18))
+	}
+	// Epoch 8 - Beyond Block 10034178
+	if headerNumber.Cmp(big.NewInt(10034178)) > 0 {
+		reward = new(big.Int).Mul(big.NewInt(3), big.NewInt(1e+18))
+	}
+	// Epoch 9 - Beyond Block 11467632
+	if headerNumber.Cmp(big.NewInt(11467632)) > 0 {
+		reward = new(big.Int).Mul(big.NewInt(2), big.NewInt(1e+18))
+	}
+	// Epoch 10 - Beyond Block 14334540
+	if headerNumber.Cmp(big.NewInt(14334540)) > 0 {
+		reward = new(big.Int).Mul(big.NewInt(1), big.NewInt(1e+18))
+	}
+
+	r := new(big.Int)
+
+	r.Add(uncleNumber, big2)
+	r.Sub(r, headerNumber)
+	r.Mul(r, reward)
+	r.Div(r, big2)
+	if r.Cmp(big.NewInt(0)) < 0 {
+		// blocks older than the previous block are not rewarded
+		r = big.NewInt(0)
+	}
+
+	return r
 }
 
 func (u *BlockUnlocker) getExtraRewardForTx(block *rpc.GetBlockReply) (*big.Int, error) {

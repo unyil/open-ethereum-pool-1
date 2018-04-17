@@ -1,25 +1,3 @@
-## Open Source Ethereum Mining Pool
-
-![Miner's stats page](https://user-images.githubusercontent.com/7374093/31591180-43c72364-b236-11e7-8d47-726cd66b876a.png)
-
-[![Join the chat at https://gitter.im/sammy007/open-ethereum-pool](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sammy007/open-ethereum-pool?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Build Status](https://travis-ci.org/sammy007/open-ethereum-pool.svg?branch=develop)](https://travis-ci.org/sammy007/open-ethereum-pool) [![Go Report Card](https://goreportcard.com/badge/github.com/sammy007/open-ethereum-pool)](https://goreportcard.com/report/github.com/sammy007/open-ethereum-pool)
-
-### Features
-
-**This pool is being further developed to provide an easy to use pool for Ethereum miners. This software is functional however an optimised release of the pool is expected soon. Testing and bug submissions are welcome!**
-
-* Support for HTTP and Stratum mining
-* Detailed block stats with luck percentage and full reward
-* Failover geth instances: geth high availability built in
-* Modern beautiful Ember.js frontend
-* Separate stats for workers: can highlight timed-out workers so miners can perform maintenance of rigs
-* JSON-API for stats
-
-#### Proxies
-
-* [Ether-Proxy](https://github.com/sammy007/ether-proxy) HTTP proxy with web interface
-* [Stratum Proxy](https://github.com/Atrides/eth-proxy) for Ethereum
-
 ### Building on Linux
 
 Dependencies:
@@ -37,7 +15,7 @@ First install  [go-ethereum](https://github.com/ethereum/go-ethereum/wiki/Instal
 Clone & compile:
 
     git config --global http.https://gopkg.in.followRedirects true
-    git clone https://github.com/sammy007/open-ethereum-pool.git
+    git clone https://github.com/atheioschain/open-ethereum-pool.git
     cd open-ethereum-pool
     make
 
@@ -218,12 +196,12 @@ otherwise you will get errors on start because of JSON comments.**
   "upstream": [
     {
       "name": "main",
-      "url": "http://127.0.0.1:8545",
+      "url": "http://127.0.0.1:8696",
       "timeout": "10s"
     },
     {
       "name": "backup",
-      "url": "http://127.0.0.2:8545",
+      "url": "http://127.0.0.2:8696",
       "timeout": "10s"
     }
   ],
@@ -255,7 +233,7 @@ otherwise you will get errors on start because of JSON comments.**
     // Run unlocker in this interval
     "interval": "10m",
     // Geth instance node rpc endpoint for unlocking blocks
-    "daemon": "http://127.0.0.1:8545",
+    "daemon": "http://127.0.0.1:8696",
     // Rise error if can't reach geth in this amount of time
     "timeout": "10s"
   },
@@ -268,7 +246,7 @@ otherwise you will get errors on start because of JSON comments.**
     // Run payouts in this interval
     "interval": "12h",
     // Geth instance node rpc endpoint for payouts processing
-    "daemon": "http://127.0.0.1:8545",
+    "daemon": "http://127.0.0.1:8696",
     // Rise error if can't reach geth in this amount of time
     "timeout": "10s",
     // Address with pool balance
@@ -302,23 +280,3 @@ I recommend this deployment strategy:
 * You must restart module if you see errors with the word *suspended*.
 * Don't run payouts and unlocker modules as part of mining node. Create separate configs for both, launch independently and make sure you have a single instance of each module running.
 * If `poolFeeAddress` is not specified all pool profit will remain on coinbase address. If it specified, make sure to periodically send some dust back required for payments.
-
-### Alternative Ethereum Implementations
-
-This pool is tested to work with [Ethcore's Parity](https://github.com/ethcore/parity). Mining and block unlocking works, but I am not sure about payouts and suggest to run *official* geth node for payments.
-
-### Credits
-
-Made by sammy007. Licensed under GPLv3.
-
-#### Contributors
-
-[Alex Leverington](https://github.com/subtly)
-
-### Donations
-
-ETH/ETC: 0xb85150eb365e7df0941f0cf08235f987ba91506a
-
-![](https://cdn.pbrd.co/images/GP5tI1D.png)
-
-Highly appreciated.
