@@ -3,15 +3,16 @@
     <div class="row">
       <div class="col-md-5">
         <h1 style="font-size: 24px">
-          <strong>Open Atheios Pool</strong>
+          <strong>Official Atheios Pool</strong>
         </h1>
-        <strong>Min. payout threshold: {{config.PayoutThreshold}}</strong>, Payouts run twice per day.<br/>
-        <span class="label label-success">PROP</span> Stable and profitable pool with regular payouts.
+        <span class="label label-primary">{{config.PayoutThreshold}}</span> Minimum payout threshold.<br/>
+        <span class="label label-primary">30 MINUTES</span> Payouts happen twice an hour.<br/>
+        <span class="label label-primary">PROP</span> Stable and profitable pool with regular payouts.
       </div>
       <div class="col-md-3 stats">
         <div><i class="fa fa-users"></i> Miners Online: <span id="poolHashrate">{{format-number stats.model.minersTotal}}</span></div>
         <div><i class="fa fa-tachometer"></i> Pool Hash Rate: <span id="poolHashrate">{{format-hashrate stats.model.hashrate}}</span></div>
-        <div><i class="fa fa-money"></i> Pool Fee: <span id="poolFee" class="label label-success">{{config.PoolFee}}</span></div>
+        <div><i class="fa fa-money"></i> Pool Fee: <span id="poolFee" class="label label-primary">{{config.PoolFee}}</span></div>
         {{#if stats.model.stats.lastBlockFound}}
         <div><i class="fa fa-clock-o"></i> Last Block Found: <span>{{format-relative (seconds-to-ms stats.model.stats.lastBlockFound)}}</span></div>
         {{/if}}

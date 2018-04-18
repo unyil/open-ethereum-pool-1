@@ -7,7 +7,7 @@ html {
 body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
-  background: url('/bg.png');
+  background: url('/charcoal.jpg');
 }
 .footer {
   position: absolute;
@@ -15,7 +15,7 @@ body {
   width: 100%;
   /* Set the fixed height of the footer here */
   height: 60px;
-  background-color: #f5f5f5;
+  background-color: #cacaca;
 }
 
 
@@ -44,6 +44,7 @@ body > .container {
 	margin: 0;
 	padding: 40px 0 15px 0;
 	margin-bottom: 15px;
+	background-color: #cacaca;
 }
 
 code {

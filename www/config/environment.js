@@ -27,10 +27,10 @@ module.exports = function(environment) {
 
       // Fee and payout details
       PoolFee: '1%',
-      PayoutThreshold: '0.5 ATH',
+      PayoutThreshold: '5 ATH',
 
       // For network hashrate (change for your favourite fork)
-      BlockTime: 14.4
+      BlockTime: 22
     }
   };
 
