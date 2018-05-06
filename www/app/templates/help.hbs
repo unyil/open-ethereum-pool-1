@@ -1,17 +1,12 @@
 <div class="container">
   <div class="page-header">
-    <h1>How To Mine</h1>
+    <h1>How To Mine Atheios</h1>
   </div>
-  <p class="lead">In order to mine on this pool you need to have an
-    <a href="https://github.com/ethereum/webthree-umbrella/releases" rel="nofollow" target="_blank">ethminer</a> installation
-    pointed to<br/><code>{{config.HttpHost}}:{{config.HttpPort}}/YOUR_ETH_ADDRESS/RIG_ID</code>
-  </p>
+
   <dl class="dl-horizontal">
-    <dt>YOUR_ETH_ADDRESS</dt>
-    <dd>This is your address for payouts, generate one with geth, or mine directly to exchange like
-      <a href="http://poloniex.com" rel="nofollow" target="_blank">Poloniex</a>
-      or <a href="http://bittrex.com" rel="nofollow" target="_blank">Bittrex</a>.<br/>
-      <strong>Example:</strong> <code>0xb85150eb365e7df0941f0cf08235f987ba91506a</code>.
+    <dt>YOUR_ATH_ADDRESS</dt>
+    <dd>This is your address for payouts. Generate one with our <a href="https://wallet.atheios.com" rel="nofollow" target="_blank">online wallet</a>.<br/>
+      <strong>Example:</strong> <code>0x4c15a20f098b96d5d1f8c8e4aedf3af68818195c</code>.
     </dd>
     <dt>RIG_ID</dt>
     <dd>
@@ -20,19 +15,28 @@
       <strong>Example:</strong> <code>rig-1</code>
     </dd>
   </dl>
+
+  <br />
+
+  <h4>Mining with <a href="https://bitcointalk.org/index.php?topic=1433925.0" rel="nofollow" target="_blank">Claymore</a></h4>
   <p>
-    <strong>Full example:</strong>
-    <code>ethminer -F {{config.HttpHost}}:{{config.HttpPort}}/0xb85150eb365e7df0941f0cf08235f987ba91506a/myfarm -G --farm-recheck 200</code>.<br/>
-    <span class="label label-info">Hint:</span> If you are compiling ethminer from latest source, please also use
-      extra <code>--disable-submit-hashrate</code> option.
+    <span class="label label-info">Stratum:</span> <code>EthDcrMiner64.exe -epool stratum+tcp://pool.atheios.com:8008 -ewal YOUR_ATH_ADDRESS -epsw x -allpools 1 -allcoins -1 -gser 2 -eworker RIG_ID</code>
   </p>
 
-  <h4>Stratum Mining with Stratum Proxy for Atheios</h4>
-  <p class="lead">Grab proxy from <a href="https://github.com/Atrides/eth-proxy" re="nofollow" target="_blank">eth-proxy GitHub repo</a>.</p>
-  <p class="lead">Edit <code>eth-proxy.conf</code> and specify our pool's <code>HOST: {{config.StratumHost}}</code>, <code>PORT: {{config.StratumPort}}</code> and your <code>WALLET</code>.</p>
+  <br />
 
-  <h4>Mining with Ether-Proxy</h4>
-  <p class="lead">Use stable release of <a href="https://github.com/atheioschain/ether-proxy/releases" target="_blank">Atheios Solo/Pool Mining Proxy</a>.</p>
+  <h4>Mining with <a href="https://github.com/ethereum-mining/ethminer/releases/tag/v0.13.0" rel="nofollow" target="_blank">Ethminer</a></h4>
+  <p>
+    <span class="label label-info">Stratum (Nvidia):</span> <code>ethminer.exe --farm-recheck 200 -U -S pool.atheios.com:8008 -SP 1 -O YOUR_ATH_ADDRESS.RIG_ID</code>
+    <br />
+    <span class="label label-info">Stratum (AMD):</span> <code>ethminer.exe --farm-recheck 200 -G -S pool.atheios.com:8008 -SP 1 -O YOUR_ATH_ADDRESS.RIG_ID</code>
+    <br />
+    <span class="label label-info">Getwork (Nvidia):</span> <code>ethminer.exe -F http://pool.atheios.com:8888/YOUR_ATH_ADDRESS/RIG_ID -U --farm-recheck 200</code>
+    <br />
+    <span class="label label-info">Getwork (AMD):</span> <code>ethminer.exe -F http://pool.atheios.com:8888/YOUR_ATH_ADDRESS/RIG_ID -G --farm-recheck 200</code>
+  </p>
+
+  <br />
 
   <h4>Advice</h4>
   <p>CPU mining is not recommended.</p>
@@ -40,4 +44,6 @@
   <p>By using the pool you accept all possible risks related to experimental software usage.<br/>
      Pool owner can't compensate any irreversible losses, but will do his best to prevent worst case.
   </p>
+
+
 </div>
